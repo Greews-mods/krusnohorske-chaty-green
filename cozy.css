@@ -658,7 +658,7 @@ body{background:#e8eddf;color:#24392b}
 .site-header{isolation:isolate;overflow:visible}
 .site-header:after{content:"";position:absolute;z-index:-1;left:5%;bottom:-1px;width:190px;height:15px;border-bottom:1px solid #bfd0b4;border-radius:0 0 0 80%;opacity:.68;pointer-events:none}
 .brand{position:relative}
-.brand:after{content:"❧";position:absolute;left:24px;top:-12px;color:#668456;font:18px var(--serif);transform:rotate(-26deg);animation:header-leaf-sway 5s ease-in-out infinite}
+.brand:after{content:"";position:absolute;left:24px;top:-12px;color:#668456;font:18px var(--serif);transform:rotate(-26deg);animation:header-leaf-sway 5s ease-in-out infinite}
 .main-nav{position:relative;display:flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid #d5dfcf;border-radius:999px 999px 999px 7px;background:rgba(247,248,239,.7);box-shadow:0 6px 20px rgba(42,67,43,.05)}
 .main-nav:before{content:"";position:absolute;top:-8px;right:27px;width:44px;height:14px;border-top:1px solid #b8caa9;border-radius:50%;transform:rotate(-15deg);pointer-events:none}
 .nav-heading,.nav-note{display:none}
@@ -686,7 +686,7 @@ body{background:#e8eddf;color:#24392b}
  .site-header .main-nav{display:flex;visibility:hidden;opacity:0;pointer-events:none;position:absolute;z-index:42;top:64px;left:auto;right:14px;width:min(365px,calc(100vw - 28px));padding:20px 18px 18px;border:1px solid #cddbc5;border-radius:8px 28px 8px 28px;background:radial-gradient(ellipse at 100% 0%,#e1ead8,transparent 42%),#f1f3e7;box-shadow:0 22px 48px rgba(26,54,34,.2);display:flex;flex-direction:column;align-items:stretch;gap:3px;transform:translateY(-12px) scale(.97);transform-origin:top right;transition:opacity .25s ease,transform .32s cubic-bezier(.2,.75,.25,1),visibility .25s;border-bottom:1px solid #cddbc5;overflow:hidden}
  .site-header .main-nav.open{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0) scale(1);animation:woodland-unfurl .48s cubic-bezier(.18,.75,.24,1) both}
  .site-header .main-nav:before{content:"";position:absolute;top:-1px;right:17px;left:20px;height:31px;width:auto;border:0;border-bottom:1px solid #bdd0b2;border-radius:0 0 50% 15%;transform:rotate(-2deg);opacity:.9}
- .site-header .main-nav:after{content:"❧  ·  ❧  ·  ❧";position:absolute;right:16px;top:7px;color:#90a67b;font:16px var(--serif);letter-spacing:8px;transform:rotate(-9deg);pointer-events:none}
+ .site-header .main-nav:after{content:"  ·    ·  ";position:absolute;right:16px;top:7px;color:#90a67b;font:16px var(--serif);letter-spacing:8px;transform:rotate(-9deg);pointer-events:none}
  .nav-heading{display:flex;align-items:center;gap:8px;position:relative;margin:0 0 12px;padding:3px 5px 15px;border-bottom:1px dashed #c4d2b9;color:#56744f;font:italic 16px var(--serif)}
  .nav-heading span{font-style:normal;color:#8a9d6b}
  .site-header .main-nav a,.site-header .main-nav a.nav-cabin{display:grid;grid-template-columns:32px 1fr 20px;align-items:center;gap:10px;min-height:59px;padding:7px 9px;border:1px solid transparent;border-radius:8px 15px 8px 3px;background:transparent!important;color:#2b4632;font-size:13px;transform:none}
@@ -700,3 +700,19 @@ body{background:#e8eddf;color:#24392b}
 @keyframes woodland-unfurl{0%{clip-path:inset(0 0 95% 0 round 8px 28px 8px 28px);opacity:0;transform:translateY(-13px) scale(.97)}65%{clip-path:inset(0 0 0 0 round 8px 28px 8px 28px);opacity:1}100%{clip-path:inset(0 0 0 0 round 8px 28px 8px 28px);transform:translateY(0) scale(1)}}
 @keyframes header-leaf-sway{0%,100%{transform:rotate(-26deg)}50%{transform:rotate(-8deg)}}
 @media(prefers-reduced-motion:reduce){.main-nav,.main-nav *,.menu-toggle,.brand:after{animation:none!important;transition:none!important}.site-header .main-nav.open{clip-path:none}}
+.rating-star{display:inline-block;width:11px;height:11px;margin-right:2px;vertical-align:-1px;background:#d3a34e;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 95%,50% 73%,21% 95%,32% 57%,2% 35%,39% 35%)}
+.camera-icon{position:relative;display:block;font-size:0}
+.camera-icon:before{content:"";width:17px;height:12px;border:1.5px solid currentColor;border-radius:3px;position:absolute;left:9px;top:12px}
+.camera-icon:after{content:"";width:5px;height:5px;border:1.5px solid currentColor;border-radius:50%;position:absolute;left:15px;top:15px}
+.brand:after{content:"";width:10px;height:15px;border-radius:100% 0 100% 0;background:#668456;left:24px;top:-12px;transform:rotate(-26deg);animation:header-leaf-sway 5s ease-in-out infinite}
+.nav-leaf{position:relative;font-size:0!important}
+.nav-leaf:before{content:"";width:11px;height:15px;border-radius:100% 0 100% 0;background:#78956a;transform:rotate(-35deg);box-shadow:inset -2px -1px 0 rgba(255,255,255,.3)}
+.nav-camp .nav-leaf:before{width:12px;height:12px;background:#87935b;clip-path:polygon(50% 0,61% 35%,100% 35%,69% 57%,80% 100%,50% 74%,20% 100%,31% 57%,0 35%,39% 35%);border-radius:0;transform:none}
+.menu-toggle-symbol{position:relative;display:block;width:21px;height:23px;font-size:0!important}
+.menu-toggle-symbol:before{content:"";position:absolute;left:5px;top:4px;width:11px;height:16px;border-radius:100% 0 100% 0;background:#668456;transform:rotate(-32deg)}
+.menu-toggle-symbol:after{content:"";position:absolute;left:8px;top:8px;width:1px;height:13px;background:#f5f6ed;transform:rotate(-32deg)}
+.menu-spark,.icon-sparkle{display:inline-block;width:12px;height:12px;background:#8da178;clip-path:polygon(50% 0,61% 37%,100% 50%,61% 63%,50% 100%,39% 63%,0 50%,39% 37%)}
+.menu-spark{width:9px;height:9px}.note-card-spark{position:absolute;right:14px;top:14px}.hearth-doodle .icon-sparkle{width:23px;height:23px}
+.site-header .main-nav:after{content:"";position:absolute;right:20px;top:10px;width:8px;height:13px;border-radius:100% 0 100% 0;background:#90a67b;transform:rotate(34deg);pointer-events:none}
+.closing-leaf{font-size:0;width:180px;height:220px;background:rgba(214,223,199,.09);clip-path:polygon(50% 0,58% 30%,79% 13%,68% 41%,100% 35%,72% 55%,94% 69%,63% 64%,54% 100%,45% 68%,17% 86%,36% 59%,0 50%,37% 45%,22% 19%,46% 35%);transform:rotate(-25deg)}
+@media(max-width:620px){.menu-toggle-symbol{width:21px;height:23px}.nav-leaf{font-size:0!important}}
