@@ -53,8 +53,8 @@ const app = document.querySelector('#app');
 const homeMarkup = app.innerHTML;
 
 function cardMarkup(place) {
-  const category = place.type === 'camp' ? 'KEMP' : 'CHATA';
-  return `<article class="place-card" data-type="${place.type}"><a href="#/misto/${place.id}" aria-label="Prohlédnout: ${place.name}"><div class="card-image"><img src="${place.image}" alt="${place.name} v české přírodě" loading="lazy"><span class="card-badge">${place.type === 'camp' ? 'CAMPEAK · HŘEBEČNÁ' : place.tag}</span><span class="card-arrow" aria-hidden="true">↗</span></div><div class="card-meta"><span class="card-location">${place.place}</span>${place.rating === '—' ? '' : `<span class="card-rating">★ ${place.rating} <span>${place.reviews}</span></span>`}</div><h3 class="card-title">${place.name}</h3><p class="card-desc">${place.short}</p></a></article>`;
+  const label = place.type === 'camp' ? 'POD HVĚZDAMI' : place.tag;
+  return `<article class="place-card cottage-card" data-type="${place.type}"><a class="cottage-card-link" href="#/misto/${place.id}" aria-label="Otevřít místo ${place.name}"><div class="card-image"><img src="${place.image}" alt="${place.name} v Krušných horách" loading="lazy"><span class="card-badge">${label}</span><span class="card-arrow" aria-hidden="true">↗</span><span class="photo-index">${place.type === 'camp' ? '✳' : `0${places.filter(item => item.type === 'cabin').findIndex(item => item.id === place.id) + 1}`}</span></div><div class="card-meta"><span class="card-location">${place.place}</span>${place.rating === '—' ? '' : `<span class="card-rating">★ ${place.rating} <span>${place.reviews}</span></span>`}</div><h3 class="card-title">${place.name}</h3><p class="card-desc">${place.short}</p><span class="card-open">Vstoupit dovnitř <i>↗</i></span></a></article>`;
 }
 
 function renderCards(filter = 'all') {
@@ -71,10 +71,23 @@ function detailMarkup(place) {
   const mapHref = place.mapUrl || `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
   const bookHref = place.type === 'camp' ? mapHref : place.booking;
   const bookText = place.type === 'camp' ? 'Zobrazit polohu kempu' : 'Ověřit dostupnost';
+  const copy = propertyCopy[place.id];
+  const kicker = place.type === 'camp' ? 'MÍSTO POD ŠIRÝM NEBEM' : 'MALÝ KOUSEK KRUŠNÝCH HOR';
+  const photoCount = String(photos.length).padStart(2, '0');
   const pricePanel = place.priceDetails
-    ? `<p class="eyebrow">AKTUÁLNÍ CENA · ŘÍJEN 2026 · MIMOSEZÓNA</p><strong>${place.price}</strong><small>${place.priceNote}</small><p class="price-details">${place.priceDetails}</p><div class="season-rates"><span>CENY PODLE SEZÓNY</span>${place.seasonRates.map(([season, rate]) => `<p><b>${season}</b><i>${rate}</i></p>`).join('')}</div><a class="price-source" href="${place.booking}" target="_blank" rel="noopener noreferrer">Ceník a termíny ubytování ↗</a>`
+    ? `<p class="eyebrow">ŘÍJEN 2026 · MIMOSEZÓNA</p><strong>${place.price}</strong><small>${place.priceNote}</small><p class="price-details">${place.priceDetails}</p><div class="season-rates"><span>CENY PODLE SEZÓNY</span>${place.seasonRates.map(([season, rate]) => `<p><b>${season}</b><i>${rate}</i></p>`).join('')}</div><a class="price-source" href="${place.booking}" target="_blank" rel="noopener noreferrer">Celý ceník a termíny ↗</a>`
     : `<p class="eyebrow">CAMPEAK · HŘEBEČNÁ</p><strong>Ceník bude doplněn</strong><small>Aktuální informace o pobytu získáte u provozovatele.</small>`;
-  return `<section class="detail-page"><div class="detail-hero"><img src="${place.image}" alt="${photoAlt}"><div class="detail-title"><p class="eyebrow">${place.place.toUpperCase()} · ${place.type === 'camp' ? 'KEMP' : 'UBYTOVÁNÍ'}</p><h1>${place.name}</h1><p>${place.rating === '—' ? place.capacity : `★ ${place.rating} ${place.reviews} · ${place.capacity}`}</p></div></div><div class="detail-body"><div><a class="back-link" href="#/">← Zpět na nabídky</a><h2>Místo, kde můžete<br><em>zvolnit.</em></h2><p>${place.description}</p><div class="detail-chips"><span>${place.capacity}</span><span>${place.place.split(' · ')[0]}</span><span>Česká příroda</span></div><p>${place.address}</p><p>Rezervaci a aktuální dostupnost ověříte přímo u našeho rezervačního partnera.</p></div><aside class="booking-panel">${pricePanel}<a class="button button-dark" href="${bookHref}" target="_blank" rel="noopener noreferrer">${bookText} <span>↗</span></a></aside></div><section class="detail-gallery"><div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> FOTOGALERIE OBJEKTU</p><h2>${place.name}<em> · fotogalerie</em></h2></div><span class="gallery-count">01 / ${String(photos.length).padStart(2, '0')}</span></div><div class="gallery-grid">${photos.map((photo, i) => `<button class="gallery-photo${i === 0 ? ' gallery-main' : ''}" data-photo-index="${i}" aria-label="Fotografie ${i + 1} z ${photos.length}">${photo}</button>`).join('')}</div></section><section class="location-section"><div class="location-copy"><p class="eyebrow"><span class="eyebrow-line"></span> ADRESA A PŘÍJEZD</p><h2>${place.name}</h2><p>${place.address || 'Přesná adresa bude doplněna'} · ${place.place}</p><a class="text-link" href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" rel="noopener noreferrer">Otevřít adresu v Google Maps <span>↗</span></a></div><div class="map-frame"><iframe title="Mapa: ${place.name}, ${place.address || 'Abertamy'}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${mapQuery}&output=embed"></iframe><span class="map-note">${place.address ? 'PŘESNÁ ADRESA UBYTOVÁNÍ' : 'PŘESNOU ADRESU DOPLNÍME'}</span></div></section>${place.type === 'camp' ? '<section class="camera-section"><div class="camera-copy"><span class="camera-icon">◉</span><div><p class="eyebrow">CAMPEAK · HŘEBEČNÁ</p><h3>Živý přenos z kempu</h3><p>Obraz z kamery bude doplněn později.</p></div></div><div class="camera-frame"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=80" alt="Ilustrační lesní fotografie; živý přenos bude doplněn"><div class="camera-overlay"><span class="camera-status"><i></i> PŘIPRAVUJEME KAMERU</span></div></div></section>' : ''}</section>`;
+  return `<section class="detail-page cozy-cabin-page">
+    <div class="cabin-breadcrumb"><a class="back-link" href="#/">← Zpátky k chalupám</a><span>${place.place.toUpperCase()}</span><b>${place.type === 'camp' ? 'CAMPEAK' : 'ZÁPIS Z HOR'}</b></div>
+    <header class="cabin-cover"><img src="${place.image}" alt="${photoAlt}" class="cabin-cover-photo"><div class="cabin-cover-shade"></div><div class="cover-note"><span class="eyebrow">${kicker}</span><h1>${place.name}</h1><p>${place.rating === '—' ? place.capacity : `★ ${place.rating} ${place.reviews} · ${place.capacity}`}</p></div><div class="cover-postmark"><span>KRKONOŠE? NE.</span><strong>KRUŠNÉ<br>HORY</strong><i>✳</i></div><div class="cover-caption">${place.tag} <span>·</span> ${place.place}</div></header>
+    <div class="cabin-story-layout">
+      <article class="cabin-story detail-body"><div class="story-paper"><span class="story-index">Z DENÍKU · ${place.type === 'camp' ? 'POD ŠIRÁKEM' : 'CHALUPY'}</span><h2>${copy.heading}</h2><p class="story-description">${place.description}</p><div class="detail-chips"></div><p class="story-address">${place.address}</p><p class="story-source-note">Popis a vybavení podle nabídky ubytování.</p><span class="source-marker">✳</span></div></article>
+      <aside class="booking-panel booking-ticket"><div class="ticket-top"><span>POBYT U NÁS</span><span>✳</span></div>${pricePanel}<a class="button button-dark" href="${bookHref}" target="_blank" rel="noopener noreferrer">${bookText} <span>↗</span></a><small class="ticket-foot">${place.type === 'camp' ? 'Campeak · Hřebečná' : 'Rezervace přímo u provozovatele'}</small></aside>
+    </div>
+    <section class="detail-gallery cozy-album"><div class="album-heading"><div><span class="story-index">OTOČTE STRÁNKU</span><h2>Vzpomínky<br /><em>na tohle místo.</em></h2></div><span class="gallery-count">01 / ${photoCount}</span></div><div class="gallery-grid">${photos.map((photo, i) => `<button class="gallery-photo${i === 0 ? ' gallery-main' : ''}" data-photo-index="${i}" aria-label="Fotografie ${i + 1} z ${photos.length}">${photo}</button>`).join('')}</div></section>
+    <section class="location-section map-postcard"><div class="location-copy"><span class="story-index">NAJDETE NÁS TADY</span><h2>${copy.mapHeading}</h2><p>${place.address || 'Přesná adresa bude doplněna'} · ${place.place}</p><a class="text-link" href="${mapHref}" target="_blank" rel="noopener noreferrer">Otevřít cestu v Google Maps <span>↗</span></a><div class="map-postmark">AŽ SEM VÁS ZAVEDE CESTA<br><b>✳ ABERTAMY &amp; HŘEBEČNÁ ✳</b></div></div><div class="map-frame"><iframe title="Mapa: ${place.name}, ${place.address || 'Abertamy'}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${mapQuery}&output=embed"></iframe></div></section>
+    ${place.type === 'camp' ? '<section class="camera-section camera-postcard"><div class="camera-copy"><span class="camera-icon">◉</span><div><span class="story-index">POHLED Z LESA</span><h3>Živá kamera<br>už brzy.</h3><p>Obraz z Campeaku doplníme později. Zatím jen tiché lesní okénko.</p></div></div><div class="camera-frame"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=80" alt="Lesní stezka v Krušných horách"><div class="camera-overlay"><span class="camera-status"><i></i> KAMERU CHYSTÁME</span></div></div></section>' : ''}
+  </section>`;
 }
 
 function route() {
@@ -90,44 +103,16 @@ function route() {
   if (!place) { location.hash = '#/'; return; }
   app.innerHTML = detailMarkup(place);
   document.title = `${place.name} — Krušnohorské Chaty · Cozy Edition`;
-  const detailColumn = document.querySelector('.detail-body > div');
-  const detailParagraphs = detailColumn?.querySelectorAll(':scope > p');
   const chips = document.querySelector('.detail-chips');
-  const mapLink = document.querySelector('.location-copy .text-link');
-  const copy = propertyCopy[place.id];
-  const detailHeading = document.querySelector('.detail-body h2');
-  const mapHeading = document.querySelector('.location-copy h2');
-  const galleryHeading = document.querySelector('.detail-gallery h2');
-  const galleryEyebrow = document.querySelector('.detail-gallery .eyebrow');
-  const locationEyebrow = document.querySelector('.location-copy .eyebrow');
-  const bookingLabel = document.querySelector('.booking-panel .eyebrow');
-  const cameraEyebrow = document.querySelector('.camera-copy .eyebrow');
-  if (copy && detailHeading) detailHeading.innerHTML = copy.heading;
-  if (copy && mapHeading) mapHeading.innerHTML = copy.mapHeading;
-  if (galleryHeading) galleryHeading.innerHTML = `${place.name}<em> · fotogalerie</em>`;
-  if (galleryEyebrow) galleryEyebrow.textContent = 'FOTOGALERIE OBJEKTU';
-  if (locationEyebrow) locationEyebrow.textContent = 'ADRESA A PŘÍJEZD';
-  if (bookingLabel) bookingLabel.textContent = place.type === 'camp' ? 'ADRESA CAMPEAKU' : 'NABÍDKA NA E-CHALUPY';
-  if (cameraEyebrow) cameraEyebrow.textContent = 'CAMPEAK · HŘEBEČNÁ';
-  if (mapLink && place.mapUrl) mapLink.href = place.mapUrl;
-  if (mapLink) mapLink.innerHTML = 'Otevřít adresu v Google Maps <span>↗</span>';
   if (chips) chips.innerHTML = [place.capacity, ...(place.features || [])].map(item => `<span>${item}</span>`).join('');
-  if (detailParagraphs?.[1]) detailParagraphs[1].textContent = place.address || 'Adresa bude doplněna';
-  if (detailParagraphs?.[2]) detailParagraphs[2].textContent = place.type === 'camp' ? 'Campeak sdílí tuto adresu s Chatou Pohoda.' : 'Popis kapacity a vybavení podle nabídky e-chalupy.cz.';
-  if (place.type === 'cabin' && detailParagraphs?.[2]) {
-    const source = document.createElement('a');
-    source.className = 'source-link';
-    source.href = place.booking;
-    source.target = '_blank';
-    source.rel = 'noopener noreferrer';
-    source.textContent = 'Zdroj informací a rezervace: e-chalupy.cz ↗';
-    detailParagraphs[2].after(source);
-  }
+  const sourceNote = document.querySelector('.story-source-note');
+  if (sourceNote && place.type === 'cabin') sourceNote.innerHTML = `Informace podle nabídky <a class="source-link" href="${place.booking}" target="_blank" rel="noopener noreferrer">e-chalupy.cz ↗</a>`;
+  if (sourceNote && place.type === 'camp') sourceNote.textContent = 'Campeak sdílí adresu s Chatou Pohoda.';
   const galleryGrid = document.querySelector('.gallery-grid');
   if (galleryGrid) {
     const caption = document.createElement('p');
     caption.className = 'gallery-source';
-    caption.textContent = place.type === 'cabin' ? 'Fotografie z nabídek ubytování doplňují ilustrační snímky.' : 'Ilustrační fotografie. Vlastní fotografie kempu lze doplnit kdykoli.';
+    caption.textContent = place.type === 'cabin' ? 'Fotografie z nabídky a z okolí.' : 'Ilustrační fotografie. Fotky kempu doplníme.';
     galleryGrid.after(caption);
   }
   const nearby = nearbyPlaces[place.id] || [];
@@ -135,7 +120,7 @@ function route() {
   if (nearby.length && locationSection) {
     const nearbySection = document.createElement('section');
     nearbySection.className = 'nearby-section';
-    nearbySection.innerHTML = `<div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> V OKOLÍ ${place.name.toLocaleUpperCase('cs-CZ')}</p><h2>Výlety, lyžování<br /><em>a občerstvení.</em></h2></div></div><div class="nearby-grid">${nearby.map((item, index) => `<article class="nearby-card" style="--nearby-delay:${index * 80}ms"><a class="nearby-photo" href="${item.url}" target="_blank" rel="noopener noreferrer" aria-label="${item.name} – otevřít web"><img src="${item.image}" alt="${item.name}" loading="lazy"></a><div class="nearby-info"><span class="nearby-kind">${item.kind}</span><h3>${item.name}</h3><p>${item.description}</p><a class="nearby-link" href="${item.url}" target="_blank" rel="noopener noreferrer">Otevřít web <span>↗</span></a></div></article>`).join('')}</div>`;
+    nearbySection.innerHTML = `<div class="nearby-heading"><span class="story-index">OKOLÍ, KTERÉ STOJÍ ZA PROCHÁZKU</span><h2>Vezměte si<br><em>svetr a vyrazte.</em></h2><p>Našli jsme pár míst, kam se rádi vracíme.</p></div><div class="nearby-grid">${nearby.map((item, index) => `<article class="nearby-card" style="--nearby-delay:${index * 80}ms"><a class="nearby-photo" href="${item.url}" target="_blank" rel="noopener noreferrer" aria-label="${item.name} – otevřít web"><img src="${item.image}" alt="${item.name}" loading="lazy"><span class="nearby-number">${String(index + 1).padStart(2, '0')}</span></a><div class="nearby-info"><span class="nearby-kind">${item.kind}</span><h3>${item.name}</h3><p>${item.description}</p><a class="nearby-link" href="${item.url}" target="_blank" rel="noopener noreferrer">Mrknout na web <span>↗</span></a></div></article>`).join('')}</div>`;
     locationSection.before(nearbySection);
   }
   prepareReveals();
