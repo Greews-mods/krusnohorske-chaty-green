@@ -154,13 +154,37 @@ document.addEventListener('click', event => {
     const open = nav.classList.toggle('open');
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Zavřít menu' : 'Otevřít menu');
+    const menuText = menuButton.querySelector('.menu-toggle-text');
+    if (menuText) menuText.textContent = open ? 'Zavřít' : 'Menu';
     return;
   }
   if (event.target.closest('.main-nav a')) {
     nav.classList.remove('open');
     menuButton.setAttribute('aria-expanded', 'false');
     menuButton.setAttribute('aria-label', 'Otevřít menu');
+    const menuText = menuButton.querySelector('.menu-toggle-text');
+    if (menuText) menuText.textContent = 'Menu';
+    return;
   }
+  if (!event.target.closest('.main-nav') && nav.classList.contains('open')) {
+    nav.classList.remove('open');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Otevřít menu');
+    const menuText = menuButton.querySelector('.menu-toggle-text');
+    if (menuText) menuText.textContent = 'Menu';
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  const nav = document.querySelector('.main-nav');
+  const menuButton = document.querySelector('.menu-toggle');
+  if (!nav?.classList.contains('open')) return;
+  nav.classList.remove('open');
+  menuButton?.setAttribute('aria-expanded', 'false');
+  menuButton?.setAttribute('aria-label', 'Otevřít menu');
+  const menuText = menuButton?.querySelector('.menu-toggle-text');
+  if (menuText) menuText.textContent = 'Menu';
 });
 
 function prepareReveals() {
