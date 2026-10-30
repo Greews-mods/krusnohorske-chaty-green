@@ -223,8 +223,8 @@ function playFirstVisitIntro() {
   const intro = document.createElement('div');
   intro.className = 'site-intro';
   intro.setAttribute('role', 'dialog');
-  intro.setAttribute('aria-label', 'Krušnohorské Chaty');
-  intro.innerHTML = `<button class="intro-skip" type="button">Přeskočit <span>↗</span></button><div class="intro-core"><span class="intro-kicker">KRUŠNÉ HORY · ABERTAMY · HŘEBEČNÁ</span><svg class="intro-mountains" viewBox="0 0 680 180" aria-hidden="true"><path d="M10 160 145 52l58 48L318 18l126 121 74-69 152 90"/><path d="m97 160 80-63 43 35 88-77 86 83 59-55 114 77"/></svg><h1>Krušnohorské<br /><em>Chaty</em></h1><p>Chata Pohoda · Chalupa Větrov · Chata Vyhlídka · Campeak</p><div class="intro-meter"><span></span></div></div>`;
+  intro.setAttribute('aria-label', 'Vítejte v Krušnohorských Chatách');
+  intro.innerHTML = `<button class="intro-skip" type="button">Přeskočit <span>↗</span></button><div class="intro-core"><span class="intro-lantern" aria-hidden="true"><i></i></span><span class="intro-kicker">ABERTAMY · HŘEBEČNÁ · KRUŠNÉ HORY</span><svg class="intro-mountains" viewBox="0 0 680 180" aria-hidden="true"><path d="M10 160 145 52l58 48L318 18l126 121 74-69 152 90"/><path d="m97 160 80-63 43 35 88-77 86 83 59-55 114 77"/></svg><h1>Už jste<br /><em>skoro doma.</em></h1><p>Tři horské chalupy a místo pod hvězdami.</p><div class="intro-meter"><span></span></div></div>`;
   document.body.append(intro);
   let finished = false;
   const finish = () => {
@@ -235,7 +235,7 @@ function playFirstVisitIntro() {
     setTimeout(() => intro.remove(), 650);
   };
   intro.querySelector('.intro-skip').addEventListener('click', finish);
-  setTimeout(finish, 2600);
+  setTimeout(finish, 3000);
 }
 
 window.addEventListener('hashchange', route);
